@@ -91,7 +91,6 @@ static void _install_signal_handlers(void);
 
 static int _dump_sink(const char *sink_name, unsigned sink_timeout, _output_context_s *ctx);
 
-static void _help(FILE *fp);
 
 
 int main(int argc, char *argv[]) {
@@ -135,7 +134,6 @@ int main(int argc, char *argv[]) {
 			case _O_FORCE_LOG_COLORS:	OPT_SET(us_log_colored, true);
 			case _O_NO_LOG_COLORS:		OPT_SET(us_log_colored, false);
 
-			case _O_HELP:		_help(stdout); return 0;
 			case _O_VERSION:	puts(VERSION); return 0;
 
 			case 0:		break;
@@ -264,38 +262,4 @@ static int _dump_sink(const char *sink_name, unsigned sink_timeout, _output_cont
 
 		LOG_INFO("Bye-bye");
 		return retval;
-}
-
-static void _help(FILE *fp) {
-#	define SAY(_msg, ...) fprintf(fp, _msg "\n", ##__VA_ARGS__)
-	SAY("\nuStreamer-dump - Dump uStreamer's memory sink to file");
-	SAY("═════════════════════════════════════════════════════");
-	SAY("Version: %s; license: GPLv3", VERSION);
-	SAY("Copyright (C) 2018-2021 Maxim Devaev <mdevaev@gmail.com>\n");
-	SAY("Example:");
-	SAY("════════");
-	SAY("    ustreamer-dump --sink test --output - \\");
-	SAY("        | ffmpeg -use_wallclock_as_timestamps 1 -i pipe: -c:v libx264 test.mp4\n");
-	SAY("Sink options:");
-	SAY("═════════════");
-	SAY("    -s|--sink <name>  ──────── Memory sink ID. No default.\n");
-	SAY("    -t|--sink-timeout <sec>  ─ Timeout for the upcoming frame. Default: 1.\n");
-	SAY("    -o|--output <filename> ─── Filename to dump output to. Use '-' for stdout. Default: just consume the sink.\n");
-	SAY("    -j|--output-json  ──────── Format output as JSON. Required option --output. Default: disabled.\n");
-	SAY("Logging options:");
-	SAY("════════════════");
-	SAY("    --log-level <N>  ──── Verbosity level of messages from 0 (info) to 3 (debug).");
-	SAY("                          Enabling debugging messages can slow down the program.");
-	SAY("                          Available levels: 0 (info), 1 (performance), 2 (verbose), 3 (debug).");
-	SAY("                          Default: %d.\n", us_log_level);
-	SAY("    --perf  ───────────── Enable performance messages (same as --log-level=1). Default: disabled.\n");
-	SAY("    --verbose  ────────── Enable verbose messages and lower (same as --log-level=2). Default: disabled.\n");
-	SAY("    --debug  ──────────── Enable debug messages and lower (same as --log-level=3). Default: disabled.\n");
-	SAY("    --force-log-colors  ─ Force color logging. Default: colored if stderr is a TTY.\n");
-	SAY("    --no-log-colors  ──── Disable color logging. Default: ditto.\n");
-	SAY("Help options:");
-	SAY("═════════════");
-	SAY("    -h|--help  ─────── Print this text and exit.\n");
-	SAY("    -v|--version  ──── Print version and exit.\n");
-#	undef SAY
 }

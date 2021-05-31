@@ -119,7 +119,7 @@ int server_listen(server_s *server) {
 		}
 		assert(!evhttp_set_cb(RUN(http), "/state", _http_callback_state, (void *)server));
 		assert(!evhttp_set_cb(RUN(http), "/snapshot", _http_callback_snapshot, (void *)server));
-		assert(!evhttp_set_cb(RUN(http), "/stream", _http_callback_stream, (void *)server));
+		assert(!evhttp_set_cb(RUN(http), "/stream.mjpg", _http_callback_stream, (void *)server));
 	}
 
 	frame_copy(STREAM(blank), EX(frame));
